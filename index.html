@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>Calculadora de Precios - Doble Tabla</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 10px;
+    }
+    h2, h3 {
+      font-size: 1.3em;
+      margin-top: 20px;
+    }
+    .buscador, .descuento {
+      margin-top: 10px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 10px;
+    }
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+      white-space: nowrap;
+    }
+    input[type="number"], select {
+      width: 80px;
+      padding: 4px;
+      font-size: 1em;
+    }
+    .total {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+    .eliminar-btn {
+      color: red;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+    .table-container {
+      overflow-x: auto;
+    }
+    button {
+      padding: 6px 12px;
+    }
+    @media (max-width: 600px) {
+      input[type="number"], select {
+        width: 100%;
+        margin-bottom: 6px;
+      }
+      button {
+        width: 100%;
+        margin-bottom: 6px;
+      }
+      .descuento input {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h2>Calculadora de Precios - SURTIDO</h2>
+  <!-- Campo de búsqueda -->
+  <div class="buscador">
+    <label for="buscador">Buscar Producto:</label>
+    <input type="text" id="buscador" placeholder="Buscar producto..." oninput="filtrarProductos()">
+  </div>
+  <!-- Tabla de catálogo de productos -->
+  <h3>Catálogo de Productos</h3>
+  <div class="table-container">
+    <table id="tabla-catalogo">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="catalogo-body"></tbody>
+    </table>
+  </div>
+  <!-- Campo de descuento -->
+  <div class="descuento">
+    <label for="valor-descuento">Descuento ($):</label>
+    <input type="number" id="valor-descuento" min="0" value="0" oninput="calcularTotal()">
+  </div>
+  <!-- Tabla de productos seleccionados -->
+  <h3>Productos Seleccionados (Nota)</h3>
+  <div class="table-container">
+    <table id="tabla-nota">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Tipo</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Total</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody id="nota-body"></tbody>
+    </table>
+  </div>
+  <!-- Totales -->
+  <div class="total">Total General: $<span id="total-general">0.00</span></div>
+  <div class="total">Descuento Aplicado: $<span id="descuento-aplicado">0.00</span></div>
+  <div class="total">Total Final: $<span id="total-final">0.00</span></div>
+  <!-- Botón Limpiar -->
+  <div class="botones">
+    <button onclick="limpiarHistorial()">Limpiar Historial</button>
+  </div>
+  <script>
+    const productos = [
+      // Aquí van los productos (el array completo se mantiene igual)
+      { nombre: "QUESO FRESCO", precio: 23.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "DOBLECREMA PURO 10", precio: 90.00, unidad: "entero", pieza: 9.00, editable: true },
+      { nombre: "DOBLECREMA PURO 12", precio: 90.00, unidad: "entero", pieza: 7.50, editable: true },
+      { nombre: "CHULETA PUERCO KG", precio: 150.00, unidad: "kg", pieza: 75.00, editable: true },
+      { nombre: "TOCINO", precio: 144.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHICHARRON", precio: 25.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "BOLILLOS", precio: 3.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "SALCHICHA DUBY", precio: 18.50, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "MANTEQUILLA ROJO", precio: 55.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHORIZO CASERO", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHORIZO ESPAÑOL", precio: 93.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO AMARILLO CAJA $8.5", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "JAMON 200GR", precio: 53.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "PLATANITOS SAL", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "PLATANITOS QUESO", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "PLATANITOS ENCHILADOS", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "PLATANITOS DULCES", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "PAN DULCE BOLSA", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "POLVORON", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "MINI PANQUE", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "MANTECADAS", precio: 20.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "PANQUE VARIOS", precio: 30.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHULETA DE PAVO", precio: 90.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "MAYONESA 3.4 KG", precio: 294.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CAPSUP DE 4 KG", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "SALCHICHA SAN MILLAN", precio: 89.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO EN (5b)", precio: 19.40, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO MEDIO", precio: 48.50, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO KILO CAMPERLAC", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO KILO YESENIA", precio: 98.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO BOTANERO PARTIDO", precio: 90.00, unidad: "unidad", pieza: 9.00, editable: true },
+      { nombre: "QUESO ENCHILADO PARTIDO", precio: 90.00, unidad: "unidad", pieza: 9.00, editable: true },
+      { nombre: "QUESO SECO ENTERO", precio: 39.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO PANTE", precio: 20.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO FRESCO GRANDE", precio: 92.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHULETA PUERCO KG", precio: 150.00, unidad: "kg", pieza: 75.00, editable: true },
+      { nombre: "TOCINO", precio: 144.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHICHARRON", precio: 25.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "JAMON 200GR", precio: 53.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO EN (5b)", precio: 19.40, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO MEDIO", precio: 48.50, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO KILO CAMPERLAC", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESILLO KILO YESENIA", precio: 98.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO SECO ENTERO", precio: 39.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO PANTE", precio: 20.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "QUESO FRESCO GRANDE", precio: 92.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHULETA PUERCO KG", precio: 150.00, unidad: "kg", pieza: 75.00, editable: true },
+      { nombre: "TOCINO", precio: 144.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHICHARRON", precio: 25.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "BOLILLOS", precio: 3.00, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "SALCHICHA DUBY", precio: 18.50, unidad: "pieza", pieza: null, editable: false },
+      { nombre: "QUESO AMARILLO CAJA $8.5", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHORIZO CASERO", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHORIZO ESPAÑOL", precio: 93.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CHULETA DE PAVO", precio: 90.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "MAYONESA 3.4 KG", precio: 294.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CAPSUP DE 4 KG", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "SALCHICHA SAN MILLAN", precio: 89.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "JAMON 200GR", precio: 53.00, unidad: "unidad", pieza: null, editable: false },
+    ];
+
+    const catalogoBody = document.getElementById("catalogo-body");
+    const notaBody = document.getElementById("nota-body");
+    const totalGeneral = document.getElementById("total-general");
+    const descuentoAplicado = document.getElementById("descuento-aplicado");
+    const totalFinal = document.getElementById("total-final");
+    let nota = [];
+    let filtroActual = "";
+
+    // Cargar catálogo
+    function renderizarCatalogo(filtro = "") {
+      filtroActual = filtro;
+      catalogoBody.innerHTML = "";
+      productos.forEach(p => {
+        if (!p.nombre.toLowerCase().includes(filtro.toLowerCase())) return;
+        const tienePieza = p.pieza !== null;
+        const tr = document.createElement("tr");
+        if (p.editable) {
+          tr.innerHTML = `
+            <td>${p.nombre}</td>
+            <td>
+              <select id="tipo-${p.nombre.replace(/\s+/g, '_')}" onchange="actualizarPrecio('${p.nombre}')">
+                <option value="unidad">${p.unidad}</option>
+                ${tienePieza ? `<option value="pieza">pieza</option>` : ''}
+              </select>
+            </td>
+            <td>$<span id="precio-${p.nombre.replace(/\s+/g, '_')}">${p.precio.toFixed(2)}</span></td>
+            <td><input type="number" min="1" value="1" id="cantidad-${p.nombre.replace(/\s+/g, '_')}"></td>
+            <td><button onclick="agregarANota('${p.nombre}')">Agregar</button></td>
+          `;
+        } else {
+          tr.innerHTML = `
+            <td>${p.nombre}</td>
+            <td>${p.unidad}</td>
+            <td>$${p.precio.toFixed(2)}</td>
+            <td><input type="number" min="1" value="1" id="cantidad-${p.nombre.replace(/\s+/g, '_')}" disabled></td>
+            <td><button onclick="agregarANota('${p.nombre}')">Agregar</button></td>
+          `;
+        }
+        catalogoBody.appendChild(tr);
+      });
+    }
+
+    // Actualizar precio al cambiar tipo
+    function actualizarPrecio(nombre) {
+      const producto = productos.find(p => p.nombre === nombre);
+      const tipo = document.getElementById(`tipo-${nombre.replace(/\s+/g, '_')}`).value;
+      const precioSpan = document.getElementById(`precio-${nombre.replace(/\s+/g, '_')}`);
+      if (producto.editable) {
+        precioSpan.textContent = (tipo === "pieza" && producto.pieza) ? producto.pieza.toFixed(2) : producto.precio.toFixed(2);
+      }
+    }
+
+    // Agregar producto a la nota
+    function agregarANota(nombre) {
+      const producto = productos.find(p => p.nombre === nombre);
+      const tipo = document.getElementById(`tipo-${nombre.replace(/\s+/g, '_')}`)?.value || "unidad";
+      const cantidad = parseFloat(document.getElementById(`cantidad-${nombre.replace(/\s+/g, '_')}`).value) || 1;
+      const precioFinal = (producto.editable && tipo === "pieza" && producto.pieza) ? producto.pieza : producto.precio;
+      const index = nota.findIndex(item => item.nombre === nombre && item.tipo === tipo);
+      if (index > -1) {
+        nota[index].cantidad += cantidad;
+      } else {
+        nota.push({
+          nombre,
+          tipo,
+          precio: precioFinal,
+          cantidad
+        });
+      }
+      renderizarNota();
+    }
+
+    // Mostrar productos seleccionados
+    function renderizarNota() {
+      notaBody.innerHTML = "";
+      nota.forEach((item, index) => {
+        const subtotal = item.cantidad * item.precio;
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.nombre}</td>
+          <td>${item.tipo}</td>
+          <td>$${item.precio.toFixed(2)}</td>
+          <td><input type="number" min="0" value="${item.cantidad}" onchange="editarCantidad(${index}, this.value)"></td>
+          <td>$${subtotal.toFixed(2)}</td>
+          <td><span class="eliminar-btn" onclick="eliminarProducto(${index})">❌</span></td>
+        `;
+        notaBody.appendChild(tr);
+      });
+      calcularTotal(); // 👈 Cambio aquí: sin parámetro
+    }
+
+    // Calcular total + aplicar descuento
+    function calcularTotal() {
+      let total = 0;
+      nota.forEach(item => {
+        total += item.cantidad * item.precio;
+      });
+      const valorDescuento = parseFloat(document.getElementById("valor-descuento").value) || 0;
+      const totalFinal = Math.max(0, total - valorDescuento);
+      totalGeneral.textContent = total.toFixed(2);
+      descuentoAplicado.textContent = valorDescuento.toFixed(2);
+      document.getElementById("total-final").textContent = totalFinal.toFixed(2);
+    }
+
+    // Editar cantidad en la nota
+    function editarCantidad(index, nuevaCantidad) {
+      nota[index].cantidad = parseFloat(nuevaCantidad) || 0;
+      if (nota[index].cantidad <= 0) {
+        nota.splice(index, 1);
+      }
+      renderizarNota();
+    }
+
+    // Eliminar producto de la nota
+    function eliminarProducto(index) {
+      nota.splice(index, 1);
+      renderizarNota();
+    }
+
+    // Filtrar productos
+    function filtrarProductos() {
+      const texto = document.getElementById("buscador").value;
+      renderizarCatalogo(texto);
+    }
+
+    // Limpiar historial
+    function limpiarHistorial() {
+      nota = [];
+      document.getElementById("valor-descuento").value = 0;
+      renderizarNota();
+    }
+
+    // Inicializar
+    renderizarCatalogo();
+    renderizarNota();
+  </script>
+</body>
+</html>
