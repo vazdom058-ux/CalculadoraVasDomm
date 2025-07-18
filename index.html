@@ -76,10 +76,10 @@
     <table id="tabla-catalogo">
       <thead>
         <tr>
+          <th>Cantidad</th>
           <th>Producto</th>
           <th>Tipo</th>
           <th>Precio</th>
-          <th>Cantidad</th>
         </tr>
       </thead>
       <tbody id="catalogo-body"></tbody>
@@ -96,10 +96,10 @@
     <table id="tabla-nota">
       <thead>
         <tr>
+          <th>Cantidad</th>
           <th>Producto</th>
           <th>Tipo</th>
           <th>Precio</th>
-          <th>Cantidad</th>
           <th>Total</th>
           <th>Acción</th>
         </tr>
@@ -117,43 +117,24 @@
   </div>
   <script>
     const productos = [
-      { nombre: "QUESO FRESCO", precio: 23.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "DOBLECREMA PURO 10", precio: 90.00, unidad: "entero", pieza: 9.00, editable: true },
-      { nombre: "DOBLECREMA PURO 12", precio: 90.00, unidad: "entero", pieza: 7.50, editable: true },
-      { nombre: "CHULETA PUERCO KG", precio: 150.00, unidad: "kg", pieza: 75.00, editable: true },
-      { nombre: "TOCINO", precio: 144.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CHICHARRON", precio: 25.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "BOLILLOS", precio: 3.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "SALCHICHA DUBY", precio: 18.50, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "MANTEQUILLA ROJO", precio: 55.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CHORIZO CASERO", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CHORIZO ESPAÑOL", precio: 93.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESO AMARILLO CAJA $8.5", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "JAMON 200GR", precio: 53.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "PLATANITOS SAL", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "PLATANITOS QUESO", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "PLATANITOS ENCHILADOS", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "PLATANITOS DULCES", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "PAN DULCE BOLSA", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "POLVORON", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "MINI PANQUE", precio: 15.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "MANTECADAS", precio: 20.00, unidad: "pieza", pieza: null, editable: false },
-      { nombre: "PANQUE VARIOS", precio: 30.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CHULETA DE PAVO", precio: 90.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "MAYONESA 3.4 KG", precio: 294.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CAPSUP DE 4 KG", precio: 95.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "SALCHICHA SAN MILLAN", precio: 89.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESILLO EN (5b)", precio: 19.40, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESILLO MEDIO", precio: 48.50, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESILLO KILO CAMPERLAC", precio: 97.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESILLO KILO YESENIA", precio: 98.00, unidad: "unidad", pieza: null, editable: false },
+      // QUESOS
+      { nombre: "QUESO FRESCO", precio: 23.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESO FRESCO GRANDE", precio: 92.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESO AMARILLO CAJA $8.5", precio: 97.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESO SECO ENTERO", precio: 39.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESO PANTE", precio: 20.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESILLO EN (5b)", precio: 19.40, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESILLO MEDIO", precio: 48.50, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESILLO KILO CAMPERLAC", precio: 97.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
+      { nombre: "QUESILLO KILO YESENIA", precio: 98.00, unidad: "unidad", pieza: null, editable: false, categoria: "queso" },
       {
         nombre: "QUESO BOTANERO PARTIDO",
         precio: 90.00,
         unidad: "entero",
         pieza10: 9.00,
         pieza12: 7.50,
-        editable: true
+        editable: true,
+        categoria: "queso"
       },
       {
         nombre: "QUESO ENCHILADO PARTIDO",
@@ -161,18 +142,45 @@
         unidad: "entero",
         pieza10: 9.00,
         pieza12: 7.50,
-        editable: true
+        editable: true,
+        categoria: "queso"
       },
-      { nombre: "QUESO SECO ENTERO", precio: 39.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESO PANTE", precio: 20.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "QUESO FRESCO GRANDE", precio: 92.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false },
-      // Nuevos productos
-      { nombre: "CREMA DE 1ª 8 BOL", precio: 47.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CREMA 1ª 4TO", precio: 47.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CREMA DE 2DA 8 BOL", precio: 26.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CREMA DE 2DA 4TO", precio: 26.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "CREMA MEZCLADA 8 BOL", precio: 34.00, unidad: "unidad", pieza: null, editable: false }
+
+      // CARNES FRÍAS
+      { nombre: "TOCINO", precio: 144.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "CHICHARRON", precio: 25.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "CHULETA PUERCO KG", precio: 150.00, unidad: "kg", pieza: 75.00, editable: true, categoria: "carne fria" },
+      { nombre: "CHULETA DE PAVO", precio: 90.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "CHORIZO CASERO", precio: 95.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "CHORIZO ESPAÑOL", precio: 93.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "JAMON 200GR", precio: 53.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "SALCHICHA DUBY", precio: 18.50, unidad: "pieza", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "SALCHICHA SAN MILLAN", precio: 89.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "MAYONESA 3.4 KG", precio: 294.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+      { nombre: "CAPSUP DE 4 KG", precio: 95.00, unidad: "unidad", pieza: null, editable: false, categoria: "carne fria" },
+
+      // PAN
+      { nombre: "BOLILLOS", precio: 3.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PAN DULCE BOLSA", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "POLVORON", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "MINI PANQUE", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "MANTECADAS", precio: 20.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PANQUE VARIOS", precio: 30.00, unidad: "unidad", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PLATANITOS SAL", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PLATANITOS QUESO", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PLATANITOS ENCHILADOS", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+      { nombre: "PLATANITOS DULCES", precio: 15.00, unidad: "pieza", pieza: null, editable: false, categoria: "pan" },
+
+      // OTROS
+      { nombre: "DOBLECREMA PURO 10", precio: 90.00, unidad: "entero", pieza: 9.00, editable: true, categoria: "otros" },
+      { nombre: "DOBLECREMA PURO 12", precio: 90.00, unidad: "entero", pieza: 7.50, editable: true, categoria: "otros" },
+      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "CREMA DE 1ª 8 BOL", precio: 47.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "CREMA 1ª 4TO", precio: 47.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "CREMA DE 2DA 8 BOL", precio: 26.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "CREMA DE 2DA 4TO", precio: 26.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "CREMA MEZCLADA 8 BOL", precio: 34.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" },
+      { nombre: "MANTEQUILLA ROJO", precio: 55.00, unidad: "unidad", pieza: null, editable: false, categoria: "otros" }
     ];
 
     const catalogoBody = document.getElementById("catalogo-body");
@@ -184,49 +192,65 @@
 
     function renderizarCatalogo(filtro = "") {
       catalogoBody.innerHTML = "";
-      productos.forEach(p => {
-        if (!p.nombre.toLowerCase().includes(filtro.toLowerCase())) return;
-        const idSafe = p.nombre.replace(/\s+/g, '_');
-        if (p.nombre === "QUESO BOTANERO PARTIDO" || p.nombre === "QUESO ENCHILADO PARTIDO") {
-          catalogoBody.innerHTML += `
-            <tr>
-              <td>${p.nombre}</td>
-              <td>
-                <select id="tipo-${idSafe}" onchange="actualizarPrecio('${p.nombre}')">
-                  <option value="entero">entero</option>
-                  <option value="pieza10">pieza 10</option>
-                  <option value="pieza12">pieza 12</option>
-                </select>
-              </td>
-              <td>$<span id="precio-${idSafe}">${p.precio.toFixed(2)}</span></td>
-              <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
-            </tr>
-          `;
-        } else if (p.editable) {
-          const tienePieza = p.pieza !== null;
-          catalogoBody.innerHTML += `
-            <tr>
-              <td>${p.nombre}</td>
-              <td>
-                <select id="tipo-${idSafe}" onchange="actualizarPrecio('${p.nombre}')">
-                  <option value="unidad">${p.unidad}</option>
-                  ${tienePieza ? `<option value="pieza">pieza</option>` : ''}
-                </select>
-              </td>
-              <td>$<span id="precio-${idSafe}">${p.precio.toFixed(2)}</span></td>
-              <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
-            </tr>
-          `;
-        } else {
-          catalogoBody.innerHTML += `
-            <tr>
-              <td>${p.nombre}</td>
-              <td>${p.unidad}</td>
-              <td>$${p.precio.toFixed(2)}</td>
-              <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
-            </tr>
-          `;
+      const categorias = {
+        "queso": "Quesos",
+        "carne fria": "Carnes Frías",
+        "pan": "Pan",
+        "otros": "Otros"
+      };
+
+      Object.entries(categorias).forEach(([categoriaKey, categoriaNombre]) => {
+        const productosFiltrados = productos
+          .filter(p => p.categoria === categoriaKey)
+          .filter(p => p.nombre.toLowerCase().includes(filtro.toLowerCase()));
+
+        if (productosFiltrados.length > 0) {
+          catalogoBody.innerHTML += `<tr><th colspan="4" style="text-align:center; background:#f2f2f2;"><strong>${categoriaNombre}</strong></th></tr>`;
         }
+
+        productosFiltrados.forEach(p => {
+          const idSafe = p.nombre.replace(/\s+/g, '_');
+          if (p.nombre === "QUESO BOTANERO PARTIDO" || p.nombre === "QUESO ENCHILADO PARTIDO") {
+            catalogoBody.innerHTML += `
+              <tr>
+                <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
+                <td>${p.nombre}</td>
+                <td>
+                  <select id="tipo-${idSafe}" onchange="actualizarPrecio('${p.nombre}')">
+                    <option value="entero">entero</option>
+                    <option value="pieza10">pieza 10</option>
+                    <option value="pieza12">pieza 12</option>
+                  </select>
+                </td>
+                <td>$<span id="precio-${idSafe}">${p.precio.toFixed(2)}</span></td>
+              </tr>
+            `;
+          } else if (p.editable) {
+            const tienePieza = p.pieza !== null;
+            catalogoBody.innerHTML += `
+              <tr>
+                <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
+                <td>${p.nombre}</td>
+                <td>
+                  <select id="tipo-${idSafe}" onchange="actualizarPrecio('${p.nombre}')">
+                    <option value="unidad">${p.unidad}</option>
+                    ${tienePieza ? `<option value="pieza">pieza</option>` : ''}
+                  </select>
+                </td>
+                <td>$<span id="precio-${idSafe}">${p.precio.toFixed(2)}</span></td>
+              </tr>
+            `;
+          } else {
+            catalogoBody.innerHTML += `
+              <tr>
+                <td><input type="number" min="0" value="0" id="cantidad-${idSafe}" onchange="agregarONuevo('${p.nombre}')"></td>
+                <td>${p.nombre}</td>
+                <td>${p.unidad}</td>
+                <td>$${p.precio.toFixed(2)}</td>
+              </tr>
+            `;
+          }
+        });
       });
     }
 
@@ -288,10 +312,10 @@
         total += subtotal;
         const tr = document.createElement("tr");
         tr.innerHTML = `
+          <td><input type="number" min="0" value="${item.cantidad}" onchange="editarCantidad(${index}, this.value)"></td>
           <td>${item.nombre}</td>
           <td>${item.tipo}</td>
           <td>$${item.precio.toFixed(2)}</td>
-          <td><input type="number" min="0" value="${item.cantidad}" onchange="editarCantidad(${index}, this.value)"></td>
           <td>$${subtotal.toFixed(2)}</td>
           <td><span class="eliminar-btn" onclick="eliminarProducto(${index})">❌</span></td>
         `;
