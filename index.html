@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="UTF-8">
   <title>Calculadora de Precios - SURTIDO</title>
   <style>
@@ -166,14 +166,22 @@
       { nombre: "QUESO SECO ENTERO", precio: 39.00, unidad: "unidad", pieza: null, editable: false },
       { nombre: "QUESO PANTE", precio: 20.00, unidad: "unidad", pieza: null, editable: false },
       { nombre: "QUESO FRESCO GRANDE", precio: 92.00, unidad: "unidad", pieza: null, editable: false },
-      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false }
+      { nombre: "MAIZ PAZOLERO", precio: 28.00, unidad: "unidad", pieza: null, editable: false },
+      // Nuevos productos
+      { nombre: "CREMA DE 1ª 8 BOL", precio: 47.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CREMA 1ª 4TO", precio: 47.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CREMA DE 2DA 8 BOL", precio: 26.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CREMA DE 2DA 4TO", precio: 26.00, unidad: "unidad", pieza: null, editable: false },
+      { nombre: "CREMA MEZCLADA 8 BOL", precio: 34.00, unidad: "unidad", pieza: null, editable: false }
     ];
+
     const catalogoBody = document.getElementById("catalogo-body");
     const notaBody = document.getElementById("nota-body");
     const totalGeneral = document.getElementById("total-general");
     const descuentoAplicado = document.getElementById("descuento-aplicado");
     const totalFinal = document.getElementById("total-final");
     let nota = [];
+
     function renderizarCatalogo(filtro = "") {
       catalogoBody.innerHTML = "";
       productos.forEach(p => {
@@ -221,6 +229,7 @@
         }
       });
     }
+
     function actualizarPrecio(nombre) {
       const producto = productos.find(p => p.nombre === nombre);
       const idSafe = nombre.replace(/\s+/g, '_');
@@ -238,6 +247,7 @@
         precioSpan.textContent = (tipo === "pieza" && producto.pieza) ? producto.pieza.toFixed(2) : producto.precio.toFixed(2);
       }
     }
+
     function agregarONuevo(nombre) {
       const producto = productos.find(p => p.nombre === nombre);
       const idSafe = nombre.replace(/\s+/g, '_');
@@ -269,6 +279,7 @@
       }
       renderizarNota();
     }
+
     function renderizarNota() {
       notaBody.innerHTML = "";
       let total = 0;
@@ -288,6 +299,7 @@
       });
       calcularTotal();
     }
+
     function calcularTotal() {
       let total = 0;
       nota.forEach(item => {
@@ -299,6 +311,7 @@
       descuentoAplicado.textContent = valorDescuento.toFixed(2);
       totalFinal.textContent = totalFinalCalculado.toFixed(2);
     }
+
     function editarCantidad(index, nuevaCantidad) {
       nota[index].cantidad = parseFloat(nuevaCantidad) || 0;
       if (nota[index].cantidad <= 0) {
@@ -306,14 +319,17 @@
       }
       renderizarNota();
     }
+
     function eliminarProducto(index) {
       nota.splice(index, 1);
       renderizarNota();
     }
+
     function filtrarProductos() {
       const texto = document.getElementById("buscador").value;
       renderizarCatalogo(texto);
     }
+
     function limpiarHistorial() {
       nota = [];
       document.getElementById("valor-descuento").value = 0;
@@ -324,6 +340,7 @@
       });
       renderizarNota();
     }
+
     // Inicializar
     renderizarCatalogo();
     renderizarNota();
